@@ -24,10 +24,13 @@
   </el-aside>
 </template>
 <script>
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex'
 export default {
   setup() {
     const router = useRouter();
+    let store = useStore();
+
     const list = [
       {
         name: 'user',
@@ -68,14 +71,18 @@ export default {
     const hasChildren = () => {
       return list.filter((item) => { return item.children })
     }
-    
-    const clickMenu =(item)=>{
+
+    const clickMenu = (item) => {
       router.push({
-        name:item.name
+        name: item.name
       })
+      store.commit('selectMenu', item)
     }
+
     console.log(noChildren(), '===');
     console.log(hasChildren(), '===');
+    //通过vuex管理
+
     return {
       noChildren,
       hasChildren,
@@ -89,13 +96,12 @@ export default {
   width: 15px;
   height: 15px;
 }
-.el-menu{
+.el-menu {
   border-right: none;
-  h3{
+  h3 {
     line-height: 40px;
     color: #fff;
     text-align: center;
-
   }
 }
 </style>

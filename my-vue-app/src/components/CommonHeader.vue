@@ -6,13 +6,18 @@
           <Menu />
         </el-icon>
       </el-button>
-      <h3>首页</h3>
+
+      <el-breadcrumb separator="/" class="bread">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="current.path" v-if="current">{{current.label}}</el-breadcrumb-item>
+
+      </el-breadcrumb>
     </div>
     <div class="r-content">
       <el-dropdown>
         <span class="el-dropdown-link">
           Dropdown List
-            <img class="user" :src="getImageUrl('dog')" alt="">
+          <img class="user" :src="getImageUrl('dog')" alt="">
         </span>
         <template #dropdown>
           <el-dropdown-menu>
@@ -25,52 +30,59 @@
   </el-header>
 </template>
 <script>
-import { defineComponent} from 'vue'
+import { defineComponent,computed } from 'vue'
 import { useStore } from 'vuex'
 export default defineComponent({
-  setup(){
+  setup() {
     let store = useStore()
-    let getImageUrl= (dog)=>{
-      console.log(import.meta.url,'打印的url');
-      return new URL(`../assets/images/${dog}.gif`,import.meta.url)
+    let getImageUrl = (dog) => {
+      console.log(import.meta.url, '打印的url');
+      return new URL(`../assets/images/${dog}.gif`, import.meta.url)
     }
-    let handleCollapse =()=>{
+    let handleCollapse = () => {
       //调用vuex中mutations里的方法;
-      console.log(store.$commit,'store');
       store.commit('updateCollapse')
     }
-    return{
+    //计算属性
+    const current = computed(() => {
+      return store.state.currentMenu
+    })
+    return {
       getImageUrl,
       handleCollapse,
+      current,
     }
   }
 })
 </script>
 <style lang="less" scoped>
-header{
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   background-color: #333;
-
 }
-.r-content{
-  .user{
+.r-content {
+  .user {
     width: 40px;
     height: 40px;
     border-radius: 50%;
   }
-
 }
-.l-content{
+.l-content {
   display: flex;
   align-items: center;
-  .el-button{
+  .el-button {
     margin-right: 20px;
   }
-  h3{
+  h3 {
     color: #fff;
   }
+}
+.bread /deep/ span{
+  color: #fff !important;
+  cursor: pointer;
+
 }
 </style>

@@ -1,9 +1,11 @@
 <template>
   <div class="common-layout">
-    <el-container>
+    <el-container class="lay-container">
       <common-aside />
-      <el-container class="r-container">
+      <el-container>
         <common-header></common-header>
+        <common-tab></common-tab>
+
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -15,10 +17,13 @@
 import { defineComponent } from 'vue';
 import CommonHeader from '../components/CommonHeader.vue';
 import CommonAside from '../components/CommonAside.vue';
+import CommonTab from '../components/CommonTab.vue';
+
 export default defineComponent({
   components: {
     CommonHeader,
-    CommonAside
+    CommonAside,
+    CommonTab
   },
   setup() {
 
@@ -32,6 +37,9 @@ export default defineComponent({
 }
 .common-layout {
   height: 100%;
+  .lay-container {
+    flex-wrap: nowrap;
+  }
   & > .el-container {
     height: 100%;
     & > .el-aside {
